@@ -24,23 +24,22 @@ def api_recommend_article():
     soup = BeautifulSoup(html, "html.parser")
     # 3. 記事一覧を取得する
     titles = soup.select("item")
-    titles = [t.string for t in titles]
+    # t.stringでなにかできる？ → タグの中身の要素だけを取り出す
+    # titles = [t for t in titles]
     # 4. ランダムに1件取得する
-    index = shuffle
-    print(index)
-    pprint(titles[index])
+    shuffle(titles)
+    title = titles[0]
+    # pprint(titles[0])
     # 5. 以下の形式で返却する.
     #     {
     #         "content" : "記事のタイトル",
     #         "link" : "記事のURL"
     #     }
-
+    return json.dumps({
+        "content" : title.find("title").string,
+        "link" : title.get('rdf:about')
+    })
 api_recommend_article()
-    # ダミー
-    # return json.dumps({
-    #     "content" : "記事のタイトルだよー",
-    #     "link" : "記事のURLだよー"
-    # })
 
 # @app.route("/api/xxxx")
 # def api_xxxx():
